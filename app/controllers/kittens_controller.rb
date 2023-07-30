@@ -5,6 +5,7 @@ class KittensController < ApplicationController
 
   def show
     @kitten = Kitten.find(params[:id])
+    @next = Kitten.find(@kitten.id + 1) if @kitten != Kitten.last
   end
 
   def new
@@ -26,18 +27,19 @@ class KittensController < ApplicationController
   end
 
   def update
-    @kitten = Kitten.find(kitten_params)
+    @kitten = Kitten.find(params[:id])
 
-    if @kitten.save
+    if @kitten.update(kitten_params)
       redirect_to @kitten
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
-  def delete
+  def destroy
     @kitten = Kitten.find(params[:id])
     @kitten.destroy
+    redirect_to root_path status: :see_other
   end
 
   private
