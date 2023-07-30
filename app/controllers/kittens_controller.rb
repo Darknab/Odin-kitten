@@ -1,11 +1,21 @@
 class KittensController < ApplicationController
   def index
     @kittens = Kitten.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @kittens }
+    end
   end
 
   def show
     @kitten = Kitten.find(params[:id])
     @next = Kitten.find(@kitten.id + 1) if @kitten != Kitten.last
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @kitten }
+    end
   end
 
   def new
